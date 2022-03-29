@@ -103,6 +103,53 @@ func (q *Queries) GetAllPostings(ctx context.Context) ([]Posting, error) {
 	return items, nil
 }
 
+const getApplicants = `-- name: GetApplicants :many
+SELECT id, first_name, last_name, email, applicant_id, resume_location, company_name FROM users INNER JOIN applicant_info
+ON users.id = applicant_info.applicant_id
+WHERE company_name = $1
+`
+
+type GetApplicantsRow struct {
+	ID             int32
+	FirstName      string
+	LastName       string
+	Email          string
+	ApplicantID    int32
+	ResumeLocation string
+	CompanyName    string
+}
+
+func (q *Queries) GetApplicants(ctx context.Context, companyName string) ([]GetApplicantsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getApplicants, companyName)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetApplicantsRow
+	for rows.Next() {
+		var i GetApplicantsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Email,
+			&i.ApplicantID,
+			&i.ResumeLocation,
+			&i.CompanyName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getCompanyJobs = `-- name: GetCompanyJobs :many
 SELECT id, title, company_name, company_description, posting_description, salary FROM posting 
 WHERE company_name = $1

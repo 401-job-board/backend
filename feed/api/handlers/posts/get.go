@@ -36,3 +36,19 @@ func getJobs(service service.Service) gin.HandlerFunc {
 		c.JSON(http.StatusOK, resource)
 	}
 }
+
+func getApplicants(service service.Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var input string
+		if err := c.ShouldBind(&input); err != nil {
+			views.Wrap(err, c)
+			return
+		}
+		resource, err := service.GetApps(c.Request.Context(), input)
+		if err != nil {
+			views.Wrap(err, c)
+			return
+		}
+		c.JSON(http.StatusOK, resource)
+	}
+}

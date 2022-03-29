@@ -9,6 +9,8 @@ import (
 func Routes(r *gin.RouterGroup, service service.Service) {
 	router := r.Group("/posts")
 	router.GET("/", getAllPostings(service))
-	router.GET("/params/", getJobs(service))
+	router.GET("/jobs/", getJobs(service))
+	router.GET("/applications/", getJobs(service))
+
 	router.POST("/", post(service))
 }

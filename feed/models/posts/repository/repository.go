@@ -14,12 +14,21 @@ type Repository interface {
 	GetAllPosts(context.Context) ([]Posting, error)
 	// Other
 	GetJobs(context.Context, GetJobsParams) ([]Posting, error)
+	GetApps(context.Context, string) ([]GetApplicantsRow, error)
 	Close() error
 }
 
 type repository struct {
 	queries *Queries
 	db      *sql.DB
+}
+
+func (repo *repository) GetApps(ctx context.Context, company string) ([]GetApplicantsRow, error) {
+	applicantList, err := repo.queries.GetApplicants(ctx, company)
+	if err != nil {
+		fmt.Print(err)
+	}
+	return applicantList, err
 }
 
 func (repo *repository) GetJobs(ctx context.Context, post GetJobsParams) ([]Posting, error) {

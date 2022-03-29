@@ -4,6 +4,19 @@ package repository
 
 import ()
 
+type ApplicantInfo struct {
+	ApplicantID    int32
+	ResumeLocation string
+	CompanyName    string
+}
+
+type Employer struct {
+	ID        int32
+	FirstName string
+	LastName  string
+	Email     string
+}
+
 type Posting struct {
 	ID                 int32
 	Title              string
@@ -11,4 +24,11 @@ type Posting struct {
 	CompanyDescription string
 	PostingDescription string
 	Salary             int32
+}
+
+type User struct {
+	ID        int32
+	FirstName string
+	LastName  string
+	Email     string
 }

@@ -35,3 +35,9 @@ VALUES(
     
 )
 RETURNING *;
+
+
+-- name: GetApplicants :many
+SELECT * FROM users INNER JOIN applicant_info
+ON users.id = applicant_info.applicant_id
+WHERE company_name = $1;

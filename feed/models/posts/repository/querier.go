@@ -10,6 +10,7 @@ type Querier interface {
 	CreateNewPosting(ctx context.Context, arg CreateNewPostingParams) (Posting, error)
 	DeletePosting(ctx context.Context, id int32) (Posting, error)
 	GetAllPostings(ctx context.Context) ([]Posting, error)
+	GetApplicants(ctx context.Context, companyName string) ([]GetApplicantsRow, error)
 	GetCompanyJobs(ctx context.Context, companyName string) ([]Posting, error)
 	GetJobs(ctx context.Context, arg GetJobsParams) ([]Posting, error)
 	GetPostingByID(ctx context.Context, id int32) (Posting, error)
